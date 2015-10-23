@@ -1,4 +1,4 @@
-var time = require("time"),
+var now = require("now"),
     isFunction = require("is_function");
 
 
@@ -14,7 +14,7 @@ function quicksort(array, sortFunction, callback) {
     if (isFunction(callback)) {
         i = 0;
         length = array.length;
-        return quicksortAsync(array, sortFunction, 0, length - 1, time.now(), function done() {
+        return quicksortAsync(array, sortFunction, 0, length - 1, now(), function done() {
             i += 1;
             if (i === length) {
                 callback(array);
@@ -32,15 +32,15 @@ function quicksortAsync(array, sortFunction, start, end, ms, callback) {
     if (sortedAreaLength > 1) {
         index = partition(array, sortFunction, start, end);
 
-        if (time.now() - ms < TICK) {
+        if (now() - ms < TICK) {
             quicksortAsync(array, sortFunction, start, index - 1, ms, callback);
             quicksortAsync(array, sortFunction, index + 1, end, ms, callback);
         } else {
             process.nextTick(function onNextTick() {
-                quicksortAsync(array, sortFunction, start, index - 1, time.now(), callback);
+                quicksortAsync(array, sortFunction, start, index - 1, now(), callback);
             });
             process.nextTick(function onNextTick() {
-                quicksortAsync(array, sortFunction, index + 1, end, time.now(), callback);
+                quicksortAsync(array, sortFunction, index + 1, end, now(), callback);
             });
         }
 
