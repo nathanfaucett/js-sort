@@ -10,7 +10,7 @@ module.exports = sort;
 
 function sort(array, sortFunction, callback) {
     var length = array.length,
-        i;
+        i, called;
 
     if (!isFunction(sortFunction)) {
         sortFunction = defalutSortFunction;
@@ -18,9 +18,11 @@ function sort(array, sortFunction, callback) {
 
     if (isFunction(callback)) {
         i = 0;
+        called = false;
         return quicksortAsync(array, sortFunction, 0, length - 1, now(), function done() {
             i += 1;
-            if (i === length) {
+            if (i === length && !called) {
+                called = true;
                 callback(array);
             }
         });
