@@ -5,24 +5,42 @@ var now = require("now"),
 var TICK = (1000 / 60) * 0.001;
 
 
-module.exports = quicksort;
+module.exports = sort;
 
 
-function quicksort(array, sortFunction, callback) {
-    var i, length;
+function sort(array, sortFunction, callback) {
+    var length = array.length,
+        i;
+
+    if (!isFunction(sortFunction)) {
+        sortFunction = defalutSortFunction;
+    }
 
     if (isFunction(callback)) {
         i = 0;
-        length = array.length;
         return quicksortAsync(array, sortFunction, 0, length - 1, now(), function done() {
             i += 1;
             if (i === length) {
                 callback(array);
             }
         });
-    } else {
+    } else if (isFunction(array.sort)) {
         return array.sort(sortFunction);
+    } else {
+        return quicksort(array, sortFunction, 0, length - 1);
     }
+}
+
+function quicksort(array, sortFunction, start, end) {
+    var index;
+
+    if (start < end) {
+        index = partition(array, sortFunction, start, end);
+        quicksort(array, sortFunction, start, index - 1);
+        quicksort(array, sortFunction, index + 1, end);
+    }
+
+    return array;
 }
 
 function quicksortAsync(array, sortFunction, start, end, ms, callback) {
@@ -77,4 +95,14 @@ function arraySwap(array, indexA, indexB) {
     var tmp = array[indexA];
     array[indexA] = array[indexB];
     array[indexB] = tmp;
+}
+
+function defalutSortFunction(a, b) {
+    if (a < b) {
+        return -1;
+    } else if (a === b) {
+        return 0;
+    } else {
+        return 1;
+    }
 }

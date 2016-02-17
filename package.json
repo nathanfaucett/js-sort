@@ -1,26 +1,28 @@
 {
-  "name": "quicksort",
+  "name": "sort",
   "version": "0.0.1",
-  "description": "quicksort for the browser and node.js",
+  "description": "sort for the browser and node.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanfaucett/quicksort.git"
+    "url": "https://github.com/nathanfaucett/sort.git"
   },
   "main": "src/index.js",
   "scripts": {
+    "bench": "node ./bench",
     "test": "npm run test-node",
     "test-node": "node ./test | ./node_modules/.bin/tap-spec",
     "test-node-raw": "node ./test",
-    "test-browser-local": "zuul --local 8080 --ui tape -- ./test"
+    "test-browser-local": "zuul --local 9999 --ui tape -- ./test"
   },
   "keywords": [
-    "quicksort",
-    "quicksort.js"
+    "sort",
+    "sort.js"
   ],
   "author": "Nathan Faucett",
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "benchmark": "^2.1.0",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.3",
     "grunt-jsbeautifier": "^0.2.10",
